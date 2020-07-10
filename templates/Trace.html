@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+.newspaper {
+    column-count: 2;
+    column-gap: 40px;
+    column-rule-style: solid;
+  }
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: rgb(231, 245, 250);
+  padding: 50px;
+  font-size: 15px;
+}
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
+<body>
+    <label>PART NUMBER:</label> &nbsp; <input type="text" id="id_PN"/>  &nbsp; &nbsp;
+    <label>MODEL:</label> &nbsp; <input type="text" id="id_Model"/> <button type="button" id="btnSearch_Model" onclick="Search()">Search</button> <br/> <br/>
+    <table class="table" id="datatable">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>PE</th>
+            <th>P/N</th>
+            <th>Model</th>
+            <th>IC P/N</th>
+            <th>IC Spec</th>
+            <th>P/N Burned</th>
+            <th>F/W Version</th>
+            <th>IC Position</th>
+            <th>Check Sum</th>
+            <th>Program Name</th>
+            <th>Dotted Color</th>
+            <th>Dotted Position</th>
+            <th>Change date</th>
+            <th>F/W note</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td>
+    
+              </td>
+            </tr>
+          </tbody>
+</body>
+{% endblock content%}
+
+{% block javascript %}
+<script type="text/javascript">
+  
+
+  function getCookie(c_name)
+  {
+    if (document.cookie.length > 0)
+    {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1)
+        {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start,c_end));
+        }
+    }
+    return "";
+   }
+    function Search(){
+      //location.reload();
+      var PN = document.getElementById("id_PN").value;
+      var Model = document.getElementById("id_Model").value;
+      
+        if(PN != null && Model != null){
+         upload(PN, Model);
+        }
+        else if(PN == null){
+         PN.value = "null";
+         upload(PN, Model);
+        }
+        else if(Model == null){
+         Model.value = "null";
+         upload(PN, Model);
+        }
+        
+    }
+    function upload(pn_, mdel){
+      var table = document.getElementById("datatable").getElementsByTagName('tbody')[0];
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'Query' %}",
+        headers: { "X-CSRFToken": getCookie("csrftoken") },
+        data:{'pn': pn_, 'model': mdel},
+        success:function(response){
+          console.log(response, pn_, mdel);
+          var res_data = JSON.parse(response['dtout']);
+          for (k in res_data){
+            var fields = res_data[k]["fields"];
+            var row = table.insertRow();
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = fields["Cus_name"];
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = fields["PE"];
+            var cell3 = row.insertCell(2);
+            cell3.innerHTML = fields["PN"];
+            var cell4 = row.insertCell(3);
+            cell4.innerHTML = fields["Model"];
+            var cell5 = row.insertCell(4);
+            cell5.innerHTML = fields["ICPN"];
+            var cell6 = row.insertCell(5);
+            cell6.innerHTML = fields["ICSpec"];
+            var cell7 = row.insertCell(6);
+            cell7.innerHTML = fields['Part_burn'];
+            var cell8 = row.insertCell(7);
+            cell8.innerHTML = fields['FwVer'];
+            var cell9 = row.insertCell(8);
+            cell9.innerHTML = fields['ICPos'];
+            var cell10 = row.insertCell(9);
+            cell10.innerHTML= fields['CheckSum'];
+            var cell11 = row.insertCell(10);
+            cell11.innerHTML = fields['Prog_name'];
+            var cell12 = row.insertCell(11);
+            cell12.innerHTML = fields['dot_color'];
+            var cell13 = row.insertCell(12);
+            var img_src = '<img src=media//' + fields['dot_pos'] + ' class="img-responsive" width="80" height="80"/>' ;
+            cell13.innerHTML = img_src;
+            var cell14 = row.insertCell(13);
+            cell14.innerHTML = fields['Change_date'];
+            var cell15 = row.insertCell(14);
+            cell15.innerHTML = fields['Fw_note'];
+          }
+          
+        },
+        error:function(response){
+          console.log(response);
+        }
+      })
+    }
+
+</script>
+{% endblock javascript%}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    </head>
+    <body>
+        <p style="color:blue;font-size:25px;">You have uploaded successfully these collections of Data:</p>
+        <table class="table" id="datatable">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>PE</th>
+                <th>P/N</th>
+                <th>Model</th>
+                <th>IC P/N</th>
+                <th>IC Spec</th>
+                <th>P/N Burned</th>
+                <th>F/W Version</th>
+                <th>IC Position</th>
+                <th>Check Sum</th>
+                <th>Program Name</th>
+                <th>Dotted Color</th>
+                <th>Dotted Position</th>
+                <th>Change date</th>
+                <th>F/W note</th>
+              </tr>
+              <tbody>
+                {%for item in res%}
+                <tr>
+                    <td>{{item.Cus_name}}</td>
+                    <td>{{item.PE}}</td>
+                    <td>{{item.PN}}</td>
+                    <td>{{item.Model}}</td>
+                    <td>{{item.ICPN}}</td>
+                    <td>{{item.ICSpec}}</td>
+                    <td>{{item.Part_burn}}</td>
+                    <td>{{item.FwVer}}</td>
+                    <td>{{item.ICPos}}</td>
+                    <td>{{item.CheckSum}}</td>
+                    <td>{{item.Prog_name}}</td>
+                    <td>{{item.dot_color}}</td>
+                    <td><img src= "{{ item.dot_pos.url }}" class="img-responsive" width="80" height="80" /></td>
+                    <td>{{item.Change_date}}</td>
+                    <td>{{item.Fw_note}}</td>
+                    {% endfor %} 
+                </tr>
+              </tbody>
+    </body>
+</html>
+
+{% endblock content %}
+ 
+{% block javascript %}
+<script>
+
+</script>
+{% endblock javascript%}

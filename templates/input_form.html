@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+.newspaper {
+    column-count: 2;
+    column-gap: 40px;
+    column-rule-style: solid;
+  }
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: rgb(231, 245, 250);
+  padding: 50px;
+  font-size: 15px;
+}
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
+<body>
+    
+    <div class="newspaper">
+        
+        <form method="POST" class="post-form" enctype="multipart/form-data">  
+            {% csrf_token %}  
+            {{ form.as_p}}  
+            <button type="submit" onclick="Submit()" class="save btn btn-default">Save</button>  
+        </form>  
+
+    </div>   
+    <!--<label id="status_id">Waiting for submit!!!</label>-->
+</body>
+{% endblock content%}
+
+{% block javascript %}
+<script>
+    n =  new Date();
+    y = n.getFullYear();
+    m = n.getMonth() + 1;
+    d = n.getDate();
+    document.getElementById("id_Change_date").value = y + "-" + m + "-" + d;
+
+    function Submit(){
+        //document.getElementById("status_id").innerHTML = "Success!!";
+        //location.reload();
+    }
+
+    function getCookie(c_name)
+    {
+      if (document.cookie.length > 0)
+      {
+          c_start = document.cookie.indexOf(c_name + "=");
+          if (c_start != -1)
+          {
+              c_start = c_start + c_name.length + 1;
+              c_end = document.cookie.indexOf(";", c_start);
+              if (c_end == -1) c_end = document.cookie.length;
+              return unescape(document.cookie.substring(c_start,c_end));
+          }
+      }
+      return "";
+     }
+
+</script>
+{% endblock javascript%}
