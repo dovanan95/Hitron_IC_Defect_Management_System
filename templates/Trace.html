@@ -43,7 +43,8 @@ div.sticky {
   <div class="sticky">
     <label>PART NUMBER:</label> &nbsp; <input type="text" id="id_PN"/>  &nbsp; &nbsp;
     <label>MODEL:</label> &nbsp; <input type="text" id="id_Model"/> <button type="button" id="btnSearch_Model" onclick="Search()">Search</button> <br/> <br/>
-    <label id="code">Code</label> &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<button type="button" id="btnUpdate" onclick="Update_Confirm()">Update</button>
+    <label id="code">Code</label> &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<button type="button" id="btnUpdate" onclick="Update_Confirm()">Update Image</button>
+    &nbsp; &nbsp;&nbsp;<button type="button" id="btnUpdate_noImg" onclick="Update_noImg()">Update</button>
   </div>
     
     <table  id="datatable" class="table table-hover" style="cursor: pointer;"  >
@@ -84,7 +85,10 @@ div.sticky {
    document.getElementById('code').innerHTML = str_code;
    document.getElementById('code').style.color = "red";
   }
-
+  function Update_noImg(){
+    code = document.getElementById('code').innerHTML;
+    location.replace('/noneimageupdate/' + code);
+  }
 
   function Update_Confirm(){
     code = document.getElementById('code').innerHTML;

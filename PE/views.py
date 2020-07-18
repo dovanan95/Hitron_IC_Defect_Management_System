@@ -111,6 +111,16 @@ def Update_Confirm(request, code):
     context['form'] = form
     return render(request, 'Update.html', context)
 
+@csrf_exempt
+def NoneImageUpdate(request, code):
+    context = {}
+    obj = get_object_or_404(MasterData, Code = code)
+    form = MasterForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/detail/' + code)
+    context['form'] = form
+    return render(request, 'Update.html', context)
 
 @csrf_exempt
 def DetailForm(request, code):
