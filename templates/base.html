@@ -7,46 +7,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}IC Defect Management System{% endblock title %}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {% block style %}
     <style>
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-          }
-          
-          li {
-            float: left;
-          }
-          
-          li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-          }
-          
-          li a:hover {
-            background-color: #111;
-          }
-        </style>
+      
+      
+    </style>
     {% endblock style %}
-    <ul>
-        <li><a class="active" href="/">Input Data</a></li>
-        <li><a href="/trace">Trace Data</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#about">About</a></li>
-    </ul>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Input Data <span class="sr-only">(current)</span></a>
+          </li>
+        
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Trace Data
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/trace">Trace By Field</a>
+              <a class="dropdown-item" href="/coderender">Trace By Code</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Developing...</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">ADMIN</a>
+          </li>
+        </ul>
+        
+      </div>
+    </nav>
     <h2><p style="color:red;">IC DEFECT MANAGEMENT SYSTEM</p></h2>
 </head>
 
 <body>
     {% block content %}
     {% endblock content %}
-
+    <br/>
+    <p>©2020 - Developed by Do Van An - TS Team</p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

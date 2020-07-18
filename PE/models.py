@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 class MasterData(models.Model):
+    Code = models.CharField(max_length=250, null=True)
     Cus_name = models.CharField(max_length=250, null=True)
     PE = models.CharField(max_length=250, null=True)
     PN = models.CharField(max_length=250, null=True)

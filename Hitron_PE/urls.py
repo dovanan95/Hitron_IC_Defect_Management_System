@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from PE.views import (input_data, Submit_master, Submit_form, Trace_Data, Query)
+from PE.views import (input_data, Submit_master, Submit_form, Trace_Data, Query, GetCode, TrackingCode, code_render, Update_Confirm, DetailForm)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +25,12 @@ urlpatterns = [
     path('PE/Submit_master', Submit_master, name="Submit_master"),
     path('submit_form', Submit_form, name="Submit_form"),
     path('trace', Trace_Data, name="Trace"),
-    path('query', Query, name="Query")
+    path('query', Query, name="Query"),
+    path('getCode', GetCode, name="getCode"),
+    path('TrackingCode', TrackingCode, name="TrackingCode"),
+    path('coderender', code_render, name='coderender'),
+    path('updateconfirm/<code>', Update_Confirm, name='Update_Confirm'),
+    path('detail/<code>', DetailForm, name='Detail')
 ]
 
 if settings.DEBUG:

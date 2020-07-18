@@ -37,18 +37,20 @@ div.sticky {
 }
 </style>
 </head>
-<body>
+<body onload="getCode()">
     
     <div class="newspaper">
-        
-        <form method="POST" class="post-form" enctype="multipart/form-data">  
-            {% csrf_token %}  
-            {{ form.as_p}}  
-            <button type="submit" onclick="Submit()" class="save btn btn-default">Save</button>  
-        </form>  
+      <form method="POST" class="post-form" enctype="multipart/form-data"> 
+        <table>
+          {% csrf_token %}  
+          {{ form.as_table}}  
+        </table> 
+       
+        <button type="submit" onclick="Submit()" class="save btn btn-default">Save</button>  
+      </form>  
 
     </div>   
-    <!--<label id="status_id">Waiting for submit!!!</label>-->
+  
 </body>
 {% endblock content%}
 
@@ -59,6 +61,25 @@ div.sticky {
     m = n.getMonth() + 1;
     d = n.getDate();
     document.getElementById("id_Change_date").value = y + "-" + m + "-" + d;
+    document.getElementById("id_Change_date").readOnly = true;
+    document.getElementById("id_Code").readOnly = true;
+    
+    function getCode(){
+      var code_gen = document.getElementById("id_Code");
+      $.ajax({
+        type:'GET',
+        url: "{% url 'getCode' %}",
+        headers: { "X-CSRFToken": getCookie("csrftoken") },
+        //data: {'data': 'none'},
+        success:function(response){
+          console.log(response);
+          code_gen.value = response;
+        },
+        error:function(response){
+          console.log(response);
+        }
+      })
+    }
 
     function Submit(){
         //document.getElementById("status_id").innerHTML = "Success!!";

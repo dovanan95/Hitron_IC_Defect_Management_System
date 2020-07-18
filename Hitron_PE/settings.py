@@ -28,7 +28,7 @@ SECRET_KEY = 'o%=$+v9v#@8d4&4$=s#g1s0^p&7m)m@5lo6efp8i=gtkg_f0%l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['172.18.150.222', '127.0.0.1']
 
 
 # Application definition
@@ -97,6 +97,8 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+
 
 
 

@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+.newspaper {
+    column-count: 2;
+    column-gap: 40px;
+    column-rule-style: solid;
+  }
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: rgb(248, 248, 248);
+  padding: 50px;
+  font-size: 15px;
+}
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
+<body>
+  <div class="sticky">
+    <label>CODE: </label> &nbsp; <input type="text" id="id_Code"/>  &nbsp; &nbsp;
+    <button type="button" id="btnSearch_Model" onclick="Search()">Search</button> <br/> <br/>
+    <label id="code">Code</label> &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<button type="button" id="btnUpdate" onclick="Update_Confirm()">Update</button>
+  </div>
+    
+    <table  id="datatable" class="table table-hover" style="cursor: pointer;"  >
+        <thead class="thead-dark">
+          <tr>
+            <th>Code</th>
+            <th>Customer</th>
+            <th>PE</th>
+            <th>P/N</th>
+            <th>Model</th>
+            <th>IC P/N</th>
+            <th>IC Spec</th>
+            <th>P/N Burned</th>
+            <th>F/W Version</th>
+            <th>IC Position</th>
+            <th>Check Sum</th>
+            <th>Program Name</th>
+            <th>Dotted Color</th>
+            <th>Dotted Position</th>
+            <th>Change date</th>
+            <th>F/W note</th>
+          </tr>
+          <tbody>
+         
+          </tbody>
+</body>
+{% endblock content%}
+
+{% block javascript %}
+<script type="text/javascript">
+  
+  document.querySelector('#datatable').onclick = function(ev) {
+    //ev.target <== td element
+    //ev.target.parentElement <== tr
+   var index = ev.target.parentElement.innerHTML;
+   var str_code = index.slice(4, 16);
+   console.log(str_code);
+   document.getElementById('code').innerHTML = str_code;
+   document.getElementById('code').style.color = "red";
+  }
+
+
+  function Update_Confirm(){
+    code = document.getElementById('id_Code').value;
+    location.replace('/updateconfirm/' + code);
+  }
+
+  function getCookie(c_name)
+  {
+    if (document.cookie.length > 0)
+    {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1)
+        {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start,c_end));
+        }
+    }
+    return "";
+   }
+    function Search(){
+      //location.reload();
+      var Code = document.getElementById("id_Code").value;
+      upload(Code)
+
+    }
+    function upload(code){
+      var table = document.getElementById("datatable").getElementsByTagName('tbody')[0];
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'TrackingCode' %}",
+        headers: { "X-CSRFToken": getCookie("csrftoken") },
+        data:{'code': code},
+        success:function(response){
+          console.log(response);
+          var res_data = JSON.parse(response['dtout']);
+          for (k in res_data){
+            var fields = res_data[k]["fields"];
+            var row = table.insertRow();
+            var cell0 = row.insertCell(0)
+            cell0.innerHTML = fields["Code"];
+            var cell1 = row.insertCell(1);
+            cell1.innerHTML = fields["Cus_name"];
+            var cell2 = row.insertCell(2);
+            cell2.innerHTML = fields["PE"];
+            var cell3 = row.insertCell(3);
+            cell3.innerHTML = fields["PN"];
+            var cell4 = row.insertCell(4);
+            cell4.innerHTML = fields["Model"];
+            var cell5 = row.insertCell(5);
+            cell5.innerHTML = fields["ICPN"];
+            var cell6 = row.insertCell(6);
+            cell6.innerHTML = fields["ICSpec"];
+            var cell7 = row.insertCell(7);
+            cell7.innerHTML = fields['Part_burn'];
+            var cell8 = row.insertCell(8);
+            cell8.innerHTML = fields['FwVer'];
+            var cell9 = row.insertCell(9);
+            cell9.innerHTML = fields['ICPos'];
+            var cell10 = row.insertCell(10);
+            cell10.innerHTML= fields['CheckSum'];
+            var cell11 = row.insertCell(11);
+            cell11.innerHTML = fields['Prog_name'];
+            var cell12 = row.insertCell(12);
+            cell12.innerHTML = fields['dot_color'];
+            var cell13 = row.insertCell(13);
+            var img_src = '<img src=media//' + fields['dot_pos'] + ' class="img-responsive" width="80" height="80"/>' ;
+            cell13.innerHTML = img_src;
+            var cell14 = row.insertCell(14);
+            cell14.innerHTML = fields['Change_date'];
+            var cell15 = row.insertCell(15);
+            cell15.innerHTML = fields['Fw_note'];
+          }
+          
+        },
+        error:function(response){
+          console.log(response);
+        }
+      })
+    }
+
+</script>
+{% endblock javascript%}

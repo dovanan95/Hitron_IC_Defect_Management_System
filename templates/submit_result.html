@@ -6,10 +6,11 @@
         
     </head>
     <body>
-        <p style="color:blue;font-size:25px;">You have uploaded successfully these collections of Data:</p>
+        <p style="color:blue;font-size:25px;">You have submitted or updated successfully these collections of Data:</p>
         <table class="table" id="datatable">
             <thead>
               <tr>
+                <TH>Code</TH>
                 <th>Customer</th>
                 <th>PE</th>
                 <th>P/N</th>
@@ -29,6 +30,7 @@
               <tbody>
                 {%for item in res%}
                 <tr>
+                    <td>{{item.Code}}</td>
                     <td>{{item.Cus_name}}</td>
                     <td>{{item.PE}}</td>
                     <td>{{item.PN}}</td>
@@ -41,7 +43,7 @@
                     <td>{{item.CheckSum}}</td>
                     <td>{{item.Prog_name}}</td>
                     <td>{{item.dot_color}}</td>
-                    <td><img src= "{{ item.dot_pos.url }}" class="img-responsive" width="80" height="80" /></td>
+                    <td><img src= "/{{ item.dot_pos.url }}" class="img-responsive" width="80" height="80" /></td>
                     <td>{{item.Change_date}}</td>
                     <td>{{item.Fw_note}}</td>
                     {% endfor %} 
