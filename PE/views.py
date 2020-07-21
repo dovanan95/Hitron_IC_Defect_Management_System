@@ -179,6 +179,8 @@ def GetCode(request):
                     res = date_code + "00" + str(index +1)
                 elif  index >= 99 and index <999:
                     res = date_code + "0" + str(index +1)
+                else:
+                    res = date_code + str(index +1)
 
             elif str(row)[2:10] != date_code:
                 res = date_code + prefix + "1"
